@@ -1,0 +1,29 @@
+
+services:
+  actions:
+    hostname: actions
+    container_name: actions
+    restart: always
+    image: ottoopensource/gitactionboard:5.0.1
+    ports:
+      - "8080:8080"
+    networks:
+        - "actions"
+
+    # DOCKERFILE is broken
+    # build:
+    #   context: ./actions
+    environment:
+      - REPO_OWNER_NAME=${REPO_OWNER}
+      - REPO_NAMES=${REPO_NAMES}
+      - GITHUB_ACCESS_TOKEN=${ACCESS_TOKEN}
+      - MS_TEAMS_NOTIFICATIONS_WEB_HOOK_URL=${TEAMS_WEB_HOOK}
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: 100m
+
+networks:
+  actions:
+    driver: "bridge"
